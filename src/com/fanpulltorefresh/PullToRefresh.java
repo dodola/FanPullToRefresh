@@ -1,5 +1,7 @@
 package com.fanpulltorefresh;
 
+
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
@@ -33,7 +35,7 @@ public class PullToRefresh extends FrameLayout implements
 	public static final int STATE_OPEN_RELEASE = 3;
 	public static final int STATE_UPDATE = 6;
 	public static final int STATE_UPDATE_SCROLL = 7;
-	private final int MAXHEIGHT = 120;
+	private final int MAXHEIGHT = 80;
 	private final String TAG = "PullToRefresh";
 
 	private ImageView mArrow;
@@ -161,10 +163,10 @@ public class PullToRefresh extends FrameLayout implements
 			this.mProgressBar.setVisibility(View.INVISIBLE);
 			this.mArrow.setVisibility(View.VISIBLE);
 			if (!mIsOpen) {
-				mIsOpen=true;
+				mIsOpen = true;
 				this.mArrow.setAnimation(mReverseFlipAnimation);
 				mReverseFlipAnimation.start();
-			
+
 			}
 			break;
 		case STATE_OPEN_MAX_RELEASE:
@@ -189,10 +191,10 @@ public class PullToRefresh extends FrameLayout implements
 			this.mProgressBar.setVisibility(View.INVISIBLE);
 			this.mArrow.setVisibility(View.VISIBLE);
 			if (mIsOpen) {
-				mIsOpen=false;
+				mIsOpen = false;
 				this.mArrow.setAnimation(mFlipAnimation);
 				mFlipAnimation.start();
-			
+
 			}
 			break;
 		case STATE_UPDATE:
@@ -251,9 +253,9 @@ public class PullToRefresh extends FrameLayout implements
 		FrameLayout.LayoutParams localLayoutParams1 = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.FILL_PARENT,
 				FrameLayout.LayoutParams.FILL_PARENT);
-		ImageView localImageView2 = this.mArrow;
+
 		ImageView.ScaleType localScaleType = ImageView.ScaleType.FIT_CENTER;
-		localImageView2.setScaleType(localScaleType);
+		this.mArrow.setScaleType(localScaleType);
 		this.mArrow.setLayoutParams(localLayoutParams1);
 		this.mArrow.setImageResource(R.drawable.arrow_down);
 
@@ -304,7 +306,7 @@ public class PullToRefresh extends FrameLayout implements
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		return false; 
+		return false;
 	}
 
 	@Override
@@ -413,7 +415,7 @@ public class PullToRefresh extends FrameLayout implements
 		Log.d(TAG, "[scrollToClose]");
 		Flinger localFlinger = this.mFlinger;
 		int i = -this.mPading;
-		localFlinger.startUsingDistance(i, 3000);
+		localFlinger.startUsingDistance(i, 2000);
 	}
 
 	private void scrollToUpdate() {
@@ -421,7 +423,7 @@ public class PullToRefresh extends FrameLayout implements
 		Flinger localFlinger = this.mFlinger;
 
 		int k = -this.mPading - MAXHEIGHT;
-		localFlinger.startUsingDistance(k, 3000);
+		localFlinger.startUsingDistance(k, 1000);
 	}
 
 	class Flinger implements Runnable {
