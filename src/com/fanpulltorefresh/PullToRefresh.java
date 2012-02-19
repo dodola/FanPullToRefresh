@@ -52,6 +52,8 @@ public class PullToRefresh extends FrameLayout implements
 	private RotateAnimation mFlipAnimation;
 	private RotateAnimation mReverseFlipAnimation;
 
+	private boolean mIsOpen = true;
+
 	public PullToRefresh(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		addUpdateBar();
@@ -70,14 +72,6 @@ public class PullToRefresh extends FrameLayout implements
 		init();
 	}
 
-	// private void init() {
-	// MAX_LENGHT = getResources().getDimensionPixelSize(
-	// R.dimen.updatebar_height);
-	// setDrawingCacheEnabled(true);
-	// // setBackgroundDrawable(null);
-	// setClipChildren(true);
-	// this.mDetector.setIsLongpressEnabled(false);
-	// }
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		Log.d(TAG, "[dispatchTouchEvent]");
@@ -162,17 +156,19 @@ public class PullToRefresh extends FrameLayout implements
 			String str1 = "下拉可以刷新";
 			StringBuilder localStringBuilder1 = new StringBuilder(str1)
 					.append("\n");
-			// String str2 = this.mDate;
-			// String str3 = str2;
 			localStringBuilder1.append(this.mDate);
 			localTextView1.setText(localStringBuilder1.toString());
 			this.mProgressBar.setVisibility(View.INVISIBLE);
 			this.mArrow.setVisibility(View.VISIBLE);
-
+			if (!mIsOpen) {
+				mIsOpen=true;
+				this.mArrow.setAnimation(mReverseFlipAnimation);
+				mReverseFlipAnimation.start();
+			
+			}
 			break;
 		case STATE_OPEN_MAX_RELEASE:
 		case STATE_OPEN_MAX:
-			// STATE_OPEN_MAX
 			int i5 = localView2.getTop();
 			int i6 = -this.mPading - i5;
 			localView2.offsetTopAndBottom(i6);
@@ -190,10 +186,14 @@ public class PullToRefresh extends FrameLayout implements
 
 			localStringBuilder2.append(this.mDate);
 			localTextView2.setText(localStringBuilder2.toString());
-
 			this.mProgressBar.setVisibility(View.INVISIBLE);
 			this.mArrow.setVisibility(View.VISIBLE);
-
+			if (mIsOpen) {
+				mIsOpen=false;
+				this.mArrow.setAnimation(mFlipAnimation);
+				mFlipAnimation.start();
+			
+			}
 			break;
 		case STATE_UPDATE:
 			// STATE_UPDATE
@@ -304,7 +304,7 @@ public class PullToRefresh extends FrameLayout implements
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		return false;
+		return false; 
 	}
 
 	@Override
@@ -378,7 +378,7 @@ public class PullToRefresh extends FrameLayout implements
 							child.getHeight()
 									- (getHeight()
 											- this.getBottomPaddingOffset() - this
-											.getTopPaddingOffset()));
+												.getTopPaddingOffset()));
 		}
 		return scrollRange;
 	}
@@ -413,7 +413,7 @@ public class PullToRefresh extends FrameLayout implements
 		Log.d(TAG, "[scrollToClose]");
 		Flinger localFlinger = this.mFlinger;
 		int i = -this.mPading;
-		localFlinger.startUsingDistance(i, 300);
+		localFlinger.startUsingDistance(i, 3000);
 	}
 
 	private void scrollToUpdate() {
@@ -421,7 +421,7 @@ public class PullToRefresh extends FrameLayout implements
 		Flinger localFlinger = this.mFlinger;
 
 		int k = -this.mPading - MAXHEIGHT;
-		localFlinger.startUsingDistance(k, 300);
+		localFlinger.startUsingDistance(k, 3000);
 	}
 
 	class Flinger implements Runnable {
@@ -519,13 +519,6 @@ public class PullToRefresh extends FrameLayout implements
 	public void setUpdateHandle(UpdateHandle paramUpdateHandle) {
 		this.mUpdateHandle = paramUpdateHandle;
 	}
-
-	// public void update()
-	// {
-	// int i = -MAXHEIGHT;
-	// this.mPading = i;
-	// this.mState = 7;
-	// }
 
 	public void updateWithoutOffset() {
 		this.mState = STATE_UPDATE_SCROLL;
