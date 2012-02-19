@@ -12,7 +12,7 @@
 		<ListView android:id="@+id/listview1" android:layout_width="fill_parent"
 			android:layout_height="fill_parent"></ListView>
 	</com.fanpulltorefresh.PullToRefresh>
-...
+```
 ###Activity
 ``` java
 public class MainActivity extends Activity implements
@@ -79,3 +79,4 @@ public class MainActivity extends Activity implements
 		}
 	};
 }
+```
